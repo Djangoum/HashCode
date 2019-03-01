@@ -59,7 +59,7 @@ def getBestVerticalPairs(images):
   
   verticalPairs = []
   while len(verticalImages) > 0:
-    img = verticalImages.pop()
+    img = verticalImages.pop(0)
     bestPair = getBestPair(img, verticalImages)
     verticalImages.remove(bestPair)
     verticalPairs.append([img, bestPair])
@@ -72,10 +72,12 @@ def getBestVerticalPairs2(images):
   
   verticalPairs = []
   while len(verticalImages) > 0:
-    img = verticalImages.pop()
-    bestPair = getBestPair(img, verticalImages[:100])
+    print("VImages len {0}".format(len(verticalImages)), end="\r")
+    img = verticalImages.pop(0)
+    bestPair = getBestPair(img, verticalImages[:1000])
     verticalImages.remove(bestPair)
     verticalPairs.append([img, bestPair])
+  print("\n")
   return [Slide(pair[0].id, pair[1].id, len(set(pair[0].tags + pair[1].tags)), set(pair[0].tags + pair[1].tags)) for pair in verticalPairs]
   
 def score_transition(slide1, slide2):
@@ -91,53 +93,33 @@ def print_output(slideShow, path):
       f.write(f"{slide.id1} {slide.id2}".strip())
       f.write("\n")
 
-file = "b_lovely_landscapes.txt"
+file = "e_shiny_selfies.txt"
 images = getImages(file)
+slides = getSlides(images)
 
-with open("solutionB.txt") as f:
-  lines = f.readlines()
+slideShow = []
 
-lines.pop()
-total = 0
-print(images[439])
-print(images[44358])
-print(score_transition(images[439].tags, images[44358].tags))
-# for i in range(len(lines)-2600):
-#   tran = score_transition(images[int(lines[i])].tags, images[int(lines[i + 1])].tags)
-#   print(tran)
-#   total += tran
-# print(total)
+sl = slides.pop(0)
+slideShow.append(sl)
 
+while len(slides) > 0:
+  print("Slides len {0}".format(len(slides)), end="\r")
 
-# slides = getSlides(images)
-
-# slideShow = []
-
-# ra = random.randint(0, len(slides))
-# sl = slides.pop()
-# slideShow.append(sl)
-
-# while len(slides) > 0:
-#   print("Slides len {0}".format(len(slides)), end="\r")
-#   if len(slides) >= 50:
-#     compareBag = slides[:50]
-#     # compareBag = slides
-#   else:
-#     compareBag = slides
+  compareBag = slides[:1000]
   
-#   bestSlide = ""
-#   bestScore = 0
-#   for cmp in compareBag:
-#     score = score_transition(sl.tags, cmp.tags)
-#     if score > bestScore:
-#       bestScore = score
-#       bestSlide = cmp
+  bestSlide = ""
+  bestScore = 0
+  for cmp in compareBag:
+    score = score_transition(sl.tags, cmp.tags)
+    if score > bestScore:
+      bestScore = score
+      bestSlide = cmp
   
-#   if bestScore == 0:
-#     sl = slides.pop()
-#   else:
-#     slideShow.append(bestSlide)
-#     slides.remove(bestSlide)
-#     sl = bestSlide
-
-# print_output(slideShow, "solutionC.txt")
+  if bestScore == 0:
+    sl = slides.pop(0)
+  else:
+    slideShow.append(bestSlide)
+    slides.remove(bestSlide)
+    sl = bestSlide
+print("\n")
+print_output(slideShow, "solutionE.txt")

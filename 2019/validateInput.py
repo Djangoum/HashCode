@@ -24,13 +24,14 @@ def score_transition(slide1, slide2):
     not_in_slide2 = len([x for x in slide2 if x not in slide1])
     return min(common, not_in_slide1, not_in_slide2)  
 
-file = "e_shiny_selfies.txt"
+file = "b_lovely_landscapes.txt"
 images = getImages(file)
+print(len(images))
 
-with open("solutionE.txt") as f:
+with open("RandomSolution.txt") as f:
   lines = f.readlines()
 
-lines.pop()
+lines.pop(0)
 total = 0
 
 for i in range(len(lines) - 1):
@@ -41,10 +42,13 @@ for i in range(len(lines) - 1):
     elif len(idsLeft) == 1:
         vTags = set(images[int(idsRight[0])].tags + images[int(idsRight[1])].tags)
         tran = score_transition(images[int(idsLeft[0])].tags, vTags)
-    else:
+    elif len(idsRight) == 1:
         vTags = set(images[int(idsLeft[0])].tags + images[int(idsLeft[1])].tags)
         tran = score_transition(images[int(idsRight[0])].tags, vTags)
-        
+    else:
+        vTagsLeft = set(images[int(idsLeft[0])].tags + images[int(idsLeft[1])].tags)
+        vTagsRigth = set(images[int(idsRight[0])].tags + images[int(idsRight[1])].tags)
+        tran = score_transition(vTagsLeft, vTagsRigth)
     total += tran
 
 print(total)

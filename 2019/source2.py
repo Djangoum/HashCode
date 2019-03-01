@@ -58,7 +58,7 @@ def getBestVerticalPairs(images):
   
   verticalPairs = []
   while len(verticalImages) > 0:
-    img = verticalImages.pop()
+    img = verticalImages.pop(0)
     bestPair = getBestPair(img, verticalImages)
     verticalImages.remove(bestPair)
     verticalPairs.append([img, bestPair])
@@ -72,10 +72,11 @@ def getBestVerticalPairs2(images):
   verticalPairs = []
   while len(verticalImages) > 0:
     print("VImages len {0}".format(len(verticalImages)), end="\r")
-    img = verticalImages.pop()
+    img = verticalImages.pop(0)
     bestPair = getBestPair(img, verticalImages[:1000])
     verticalImages.remove(bestPair)
     verticalPairs.append([img, bestPair])
+  print("\n")
   return [Slide(pair[0].id, pair[1].id, len(set(pair[0].tags + pair[1].tags)), set(pair[0].tags + pair[1].tags)) for pair in verticalPairs]
   
 def score_transition(slide1, slide2):
@@ -91,7 +92,8 @@ def print_output(slideShow, path):
       f.write(f"{slide.id1} {slide.id2}".strip())
       f.write("\n")
 
-file = "e_shiny_selfies.txt"
+file = "d_pet_pictures.txt"
+print(file)
 images = getImages(file)
 slides = getSlides(images)
 
@@ -116,13 +118,10 @@ while len(slides) > 0:
       bestSlide = cmp
   
   if bestScore == 0:
-    sl = slides.pop()
+    sl = slides.pop(0)
   else:
-    scr = score_transition(sl.tags, bestSlide.tags)
-    if scr == 0:
-      print("hola")
     slideShow.append(bestSlide)
     slides.remove(bestSlide)
     sl = bestSlide
-
-print_output(slideShow, "solutionE.txt")
+print("\n")
+print_output(slideShow, "solutionD.txt")
