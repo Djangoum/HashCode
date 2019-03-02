@@ -93,8 +93,14 @@ def print_output(slideShow, path):
       f.write(f"{slide.id1} {slide.id2}".strip())
       f.write("\n")
 
-file = "e_shiny_selfies.txt"
-images = getImages(file)
+fileA = ["a_example.txt", "outputA.txt"]
+fileB = ["b_lovely_landscapes.txt", "outputB.txt"]
+fileC = ["c_memorable_moments.txt", "outputC.txt"]
+fileD = ["d_pet_pictures.txt", "outputD.txt"]
+fileE = ["e_shiny_selfies.txt", "outputE.txt"]
+files = fileB
+
+images = getImages(files[0])
 slides = getSlides(images)
 
 slideShow = []
@@ -122,4 +128,4 @@ while len(slides) > 0:
     slides.remove(bestSlide)
     sl = bestSlide
 print("\n")
-print_output(slideShow, "solutionE.txt")
+print_output(slideShow, files[1])
